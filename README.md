@@ -1,133 +1,144 @@
-# Genetic Algorithm for Solving Quadratic Equations
+# Genetic Algorithm for Solving Quadratic Equation
 
-This project implements a genetic algorithm to find the solution for a quadratic equation of the form `x^2-49` using binary encoding, uniform crossover, and mutation.
+This project uses a Genetic Algorithm to solve the quadratic equation \(9x^2 - 4 = 0\). The algorithm helps find the value of \(x\) that makes \(f(x) = |9x^2 - 4|\) as small as possible.
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Algorithm Details](#algorithm-details)
-  - [Fitness Function](#fitness-function)
-  - [Binary Encoding](#binary-encoding)
-  - [Binary Decoding](#binary-decoding)
-  - [Two Point Crossover](#two-point-crossover)
-  - [Mutation](#mutation)
-- [Results](#results)
+## Problem Parameters
 
-## Introduction
+- Population Size: 10
+- Chromosome Length: 9 bits (1 sign bit + 3 integer bits + 5 fractional bits)
+- Mutation Rate: 0.2
+- Generations: 10
 
-This project demonstrates how to use genetic algorithms to solve a quadratic equation. The genetic algorithm evolves a population of binary-encoded individuals over several generations to find the best solution.
+## Fitness Function
 
-## Features
+The fitness function is the absolute value of \(9x^2 - 4\). We want to make this value as small as possible.
 
-- Binary encoding and decoding of individuals
-- Two point crossover to produce offspring
-- Mutation to introduce variability
-- Fitness function based on the quadratic equation `x^2 - 49`
-
-## Installation (Jupyter)
-
-To run this project locally, follow these steps:
-
-### 1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/ronishg27/Genetic-algorithm
-   cd Genetic-algorithm
-   ```
-
-
-### 2. Install Jupyter Notebook and dependencies:
-
-   Install Jupyter Notebook and other dependencies using `pip`.
-
-   ```bash
-   pip install jupyter
-   ```
-
-
-### 3. Start Jupyter Notebook:
-
-   Launch Jupyter Notebook to run the genetic algorithm notebook.
-
-   ```bash
-   jupyter notebook
-   ```
-
-### 4. Open the notebook:
-
-   Navigate to the `genetic_algo.ipynb` file in your Jupyter Notebook interface and open it to execute the genetic algorithm code.
-
-### 5. Run the genetic algorithm:
-
-   Follow the instructions within the notebook to run the genetic algorithm and view results.
-
-### 6. Shutdown Jupyter Notebook:
-
-   Once finished, you can shutdown Jupyter Notebook by pressing `Ctrl + C` in the terminal where it's running and confirming the shutdown.
-
-## Algorithm Details
-### Fitness Function
-  The fitness function evaluates how close a given solution is to the actual solution of the quadratic equation:
 ```python
 def fitness_function(x):
-   return 49 - x_real**2
+    x_real = decode_binary(x)
+    return abs(9*x_real**2 - 4)  # We want to minimize this
 ```
 
-### Binary Encoding
-  Each individual in the population is represented as a binary string:
+## Binary Encoding
 
-```python
-def encode_binary(x_real):
-    sign_bit = 0 if x_real >= 0 else 1
-    x_real = abs(x_real)
-    integer_part = int(x_real)
-    fractional_part = x_real - integer_part
-    integer_bin = f'{integer_part:05b}'
-    fractional_bin = f'{int(fractional_part * 2**6):06b}'
-    return str(sign_bit) + integer_bin + fractional_bin
-
-```
-
-### Binary Decoding
-The binary string is decoded back to a real number:
+The binary representation has 1 sign bit, 3 integer bits, and 5 fractional bits. The `decode_binary` function changes a binary string to a real number.
 
 ```python
 def decode_binary(x):
-   sign_bit = int(x[0])
-   integer_part = int(x[1:6], 2)
-   fractional_part = int(x[6:], 2) / 2**6
-   x_real = (-1)**sign_bit * (integer_part + fractional_part)
-   return x_real
-
+    sign_bit = int(x[0])
+    integer_part = int(x[1:4], 2)
+    fractional_part = int(x[4:], 2) / 2**5
+    x_real = (-1)**sign_bit * (integer_part + fractional_part)
+    return x_real
 ```
-### Two Point Crossover
-  Two point crossover creates two offspring from two parents by randomly selecting two points in the parent's binary string:
+
+## Genetic Algorithm Implementation
+
+### Initialize Population
+
+The initial population is made randomly.
+
+```python
+def initialize_population(population_size):
+    population = []
+    for _ in range(population_size):
+        individual = ''.join(random.choice('01') for _ in range(bit_len))
+        population.append(individual)
+    return population
+```
+
+### Crossover
+
+Two-point crossover is used to create offspring.
 
 ```python
 def crossover(parent1, parent2):
-   point1 = random.randint(1, GENOME_LENGTH - 2)
-   point2 = random.randint(point1 + 1, GENOME_LENGTH - 1)
-   child1 = parent1[:point1] + parent2[point1:point2] + parent1[point2:]
-   child2 = parent2[:point1] + parent1[point1:point2] + parent2[point2:]
-   return child1, child2
+    point1, point2 = sorted(random.sample(range(1, bit_len), 2))
+    child1 = parent1[:point1] + parent2[point1:point2] + parent1[point2:]
+    child2 = parent2[:point1] + parent1[point1:point2] + parent2[point2:]
+    return child1, child2
 ```
+
 ### Mutation
-  Mutation introduces random changes to an individual to maintain genetic diversity:
+
+Each bit of the offspring can change with a certain chance (mutation rate).
 
 ```python
 def mutate(individual):
-    mutated = ''.join(
-        bit if random.random() > MUTATION_RATE else '1' if bit == '0' else '0'
-        for bit in individual
-    )
-    return mutated
-```
-### Results
-  After running the genetic algorithm, the best solution found will be printed along with its fitness value:
-  
-```
-Best value found: 29.84375, Fitness: -841.6494140625
+    mutated_individual = list(individual)
+    for i in range(bit_len):
+        if random.random() < mut_rate:
+            mutated_individual[i] = '0' if individual[i] == '1' else '1'
+    return ''.join(mutated_individual)
 ```
 
+### Roulette Wheel Selection
+
+This function selects individuals based on their fitness values.
+
+```python
+def roulette_wheel_selection(population, fitness_values):
+    total_fitness = sum(fitness_values)
+    probabilities = [fitness / total_fitness for fitness in fitness_values]
+    pointer = random.random()
+    cumulative_prob = 0
+    for i, prob in enumerate(probabilities):
+        cumulative_prob += prob
+        if pointer <= cumulative_prob:
+            return population[i]
+```
+
+### Main Genetic Algorithm
+
+The genetic algorithm runs for a number of generations and evolves the population to find the best solution.
+
+```python
+def genetic_algorithm():
+    population = initialize_population(popn_size)
+    for generation in range(gen):
+        fitness_values = [fitness_function(x) for x in population]
+        new_population = []
+        for _ in range(popn_size // 2):
+            parent1 = roulette_wheel_selection(population, fitness_values)
+            parent2 = roulette_wheel_selection(population, fitness_values)
+            child1, child2 = crossover(parent1, parent2)
+            child1 = mutate(child1)
+            child2 = mutate(child2)
+            new_population.extend([child1, child2])
+        population = new_population
+
+        # Optionally, print the best solution in each generation
+        best_individual = min(population, key=fitness_function)
+        best_solution = decode_binary(best_individual)
+        best_fitness = fitness_function(best_individual)
+        print(f"Generation {generation + 1}: x = {best_solution}, Fitness = {best_fitness}")
+
+    best_individual = min(population, key=fitness_function)
+    best_solution = decode_binary(best_individual)
+    return best_individual, best_solution
+
+best_individual, best_solution = genetic_algorithm()
+best_fitness = fitness_function(best_individual)
+
+print(f"Best individual found: {best_individual}")
+print(f"Decoded best solution: x = {best_solution}, Fitness = {best_fitness}")
+```
+
+## Output
+
+The expected output will show the best solution found in each generation and the final best solution after all generations.
+
+```
+Generation 1: x = -3.96875, Fitness = 137.7587890625
+Generation 2: x = -1.5625, Fitness = 17.97265625
+Generation 3: x = -1.71875, Fitness = 22.5869140625
+Generation 4: x = 2.59375, Fitness = 56.5478515625
+Generation 5: x = 1.46875, Fitness = 15.4150390625
+Generation 6: x = 3.1875, Fitness = 87.44140625
+Generation 7: x = -3.0, Fitness = 77.0
+Generation 8: x = 0.90625, Fitness = 3.3916015625
+Generation 9: x = 0.46875, Fitness = 2.0224609375
+Generation 10: x = 3.03125, Fitness = 78.6962890625
+Best individual found: 001100001
+Decoded best solution: x = 3.03125, Fitness = 78.6962890625
+```
