@@ -2,12 +2,82 @@
 
 This project uses a Genetic Algorithm to solve the quadratic equation \(9x^2 - 4 = 0\). The algorithm helps find the value of \(x\) that makes \(f(x) = |9x^2 - 4|\) as small as possible.
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Problem Parameters](#Problem-Parameters)
+- [Algorithm Details](#algorithm-details)
+  - [Fitness Function](#fitness-function)
+  - [Binary Encoding](#binary-encoding)
+  - [Binary Decoding](#binary-decoding)
+  - [Genetic Algorithm Implementation](#Genetic_Algorithm_Implementation),
+  - [Crossover](#crossover)
+  - [Mutation](#mutation)
+- [Output](#output)
+
+## Introduction
+
+This project demonstrates how to use genetic algorithms to solve a quadratic equation. The genetic algorithm evolves a population of binary-encoded individuals over several generations to find the best solution.
+
+## Features
+
+- Binary encoding and decoding of individuals
+- Two point crossover to produce offspring
+- Mutation to introduce variability
+- Fitness function based on the quadratic equation `x^2 - 49`
+
+## Installation (Jupyter)
+
+To run this project locally, follow these steps:
+
+### 1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/ronishg27/Genetic-algorithm
+   cd Genetic-algorithm
+   ```
+
+
+### 2. Install Jupyter Notebook and dependencies:
+
+   Install Jupyter Notebook and other dependencies using `pip`.
+
+   ```bash
+   pip install jupyter
+   ```
+
+
+### 3. Start Jupyter Notebook:
+
+   Launch Jupyter Notebook to run the genetic algorithm notebook.
+
+   ```bash
+   jupyter notebook
+   ```
+
+### 4. Open the notebook:
+
+   Navigate to the `genetic_algo.ipynb` file in your Jupyter Notebook interface and open it to execute the genetic algorithm code.
+
+### 5. Run the genetic algorithm:
+
+   Follow the instructions within the notebook to run the genetic algorithm and view results.
+
+### 6. Shutdown Jupyter Notebook:
+
+   Once finished, you can shutdown Jupyter Notebook by pressing `Ctrl + C` in the terminal where it's running and confirming the shutdown.
+
+
 ## Problem Parameters
 
 - Population Size: 10
 - Chromosome Length: 9 bits (1 sign bit + 3 integer bits + 5 fractional bits)
 - Mutation Rate: 0.2
 - Generations: 10
+
+## Algorithm Details
 
 ## Fitness Function
 
