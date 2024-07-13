@@ -4,7 +4,6 @@ This project uses a Genetic Algorithm to solve the quadratic equation \(9x^2 - 4
 
 ## Table of Contents
 - [Introduction](#introduction)
-- [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Problem Parameters](#Problem-Parameters)
@@ -12,7 +11,7 @@ This project uses a Genetic Algorithm to solve the quadratic equation \(9x^2 - 4
   - [Fitness Function](#fitness-function)
   - [Binary Encoding](#binary-encoding)
   - [Binary Decoding](#binary-decoding)
-  - [Genetic Algorithm Implementation](#Genetic_Algorithm_Implementation),
+  - [Genetic Algorithm Implementation](#genetic_algorithm_implementation)
   - [Crossover](#crossover)
   - [Mutation](#mutation)
 - [Output](#output)
@@ -20,13 +19,6 @@ This project uses a Genetic Algorithm to solve the quadratic equation \(9x^2 - 4
 ## Introduction
 
 This project demonstrates how to use genetic algorithms to solve a quadratic equation. The genetic algorithm evolves a population of binary-encoded individuals over several generations to find the best solution.
-
-## Features
-
-- Binary encoding and decoding of individuals
-- Two point crossover to produce offspring
-- Mutation to introduce variability
-- Fitness function based on the quadratic equation `x^2 - 49`
 
 ## Installation (Jupyter)
 
