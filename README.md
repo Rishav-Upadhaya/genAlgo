@@ -28,8 +28,8 @@ To run this project locally, follow these steps:
 ### 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/ronishg27/Genetic-algorithm
-   cd Genetic-algorithm
+   git clone https://github.com/Rishav-Upadhaya/genAlgo
+   cd genAlgo
    ```
 
 
@@ -52,7 +52,7 @@ To run this project locally, follow these steps:
 
 ### 4. Open the notebook:
 
-   Navigate to the `genetic_algo.ipynb` file in your Jupyter Notebook interface and open it to execute the genetic algorithm code.
+   Navigate to the `genAlgo.ipynb` file in your Jupyter Notebook interface and open it to execute the genetic algorithm code.
 
 ### 5. Run the genetic algorithm:
 
