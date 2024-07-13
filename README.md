@@ -10,10 +10,11 @@ This project uses a Genetic Algorithm to solve the quadratic equation \(9x^2 - 4
 - [Algorithm Details](#algorithm-details)
   - [Fitness Function](#fitness-function)
   - [Binary Encoding](#binary-encoding)
-  - [Binary Decoding](#binary-decoding)
   - [Genetic Algorithm Implementation](#genetic_algorithm_implementation)
   - [Crossover](#crossover)
   - [Mutation](#mutation)
+  - [Roulette Wheel Selection](#Roulette_Wheel_Selection)
+  - [Main Genetic Algorithm](Main_Genetic_Algorithm)
 - [Output](#output)
 
 ## Introduction
